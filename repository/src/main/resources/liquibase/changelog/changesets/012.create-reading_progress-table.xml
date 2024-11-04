@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="create-reading_progress-table" author="Nikita Lyashkevich">
+        <createTable tableName="reading_progress">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_reading_progress_user_id"
+                             references="users(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="book_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_reading_progress_book_id"
+                             references="books(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="chapter_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_reading_progress_chapter_id"
+                             references="chapters(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="last_read_date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="last_read_place" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="reading_progress" columnNames="user_id, book_id"/>
+
+        <rollback>
+            <dropTable tableName="reading_progress" cascadeConstraints="true"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

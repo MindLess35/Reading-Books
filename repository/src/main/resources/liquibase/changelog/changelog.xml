@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <include file="/changesets/01.create-users-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/02.create-book_series-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/03.create-books-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/04.create-books_statistics-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/05.create-book_genres-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/06.create-book_tags-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/07.create-chapters-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/08.create-comments-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/09.create-user_likes-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/010.create-book_authors-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/011.create-user_libraries-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/012.create-reading_progress-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/013.create-book_reviews-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/014.create-book_collections-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/015.create-book_collection_items-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/016.create-book_collection_stats-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/017.create-chapter_statistics-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/018.create-user_ratings-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/019.create-purchased_books-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/020.create-book_visits-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/021.create-subscriptions-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/022.create-notifications-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/023.create-refresh_tokens-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/024.create-index-book_series-user_id.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/025.create-index-books-series_id.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/026.create-index-chapters-book_id.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/027.create-index-comments-user_id-parent_id.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/028.create-index-book_collections-user_id.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/029.create-index-book_collection_stats-collection_id.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/030.create-index-chapter_statistics-chapter_id.xml" relativeToChangelogFile="true"/>
+
+    <include file="/changesets/031.create-index-refresh_tokens-user_id.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>

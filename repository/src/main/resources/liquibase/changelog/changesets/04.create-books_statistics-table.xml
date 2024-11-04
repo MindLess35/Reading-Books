@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="create-book_statistics-table" author="Nikita Lyashkevich">
+        <createTable tableName="book_statistics">
+            <column name="book_id" type="BIGINT">
+                <constraints primaryKey="true"
+                             foreignKeyName="fk_book_statistics_book_id"
+                             references="books(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="pages_count" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="likes_count" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="characters_count" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ratings_count" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="rating" type="FLOAT"/>
+
+            <column name="views_count" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="publication_date" type="TIMESTAMP"/>
+
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_at" type="TIMESTAMP"/>
+
+            <column name="library_add_count" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="reading_now_count" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="already_read_count" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="will_read_count" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="not_interested_count" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="abandoned_count" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="downloads_count" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="book_statistics" cascadeConstraints="true"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="create-chapter_statistics-table" author="Nikita Lyashkevich">
+        <createTable tableName="chapter_statistics">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="chapter_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_chapter_statistics_chapter_id"
+                             references="chapters(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="views_count" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="pages_count" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="characters_count" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_at" type="TIMESTAMP"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="chapter_statistics" cascadeConstraints="true"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

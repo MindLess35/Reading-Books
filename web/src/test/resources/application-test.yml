@@ -1,0 +1,10 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        default_schema: public
+
+  liquibase:
+    enabled: true
+    change-log: liquibase/changelog-master.xml
+    default-schema: public

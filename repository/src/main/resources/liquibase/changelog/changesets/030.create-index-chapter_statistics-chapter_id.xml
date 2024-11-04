@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="create-index-chapter_statistics-chapter_id" author="Nikita Lyashkevich">
+        <createIndex indexName="idx_chapter_statistics_chapter_id" tableName="chapter_statistics">
+            <column name="chapter_id"/>
+        </createIndex>
+
+        <rollback>
+            <dropIndex indexName="idx_chapter_statistics_chapter_id" tableName="chapter_statistics"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

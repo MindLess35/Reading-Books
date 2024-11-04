@@ -1,0 +1,115 @@
+jwt:
+  signing-key: erwlfrkgtuig3q8940-506e-9458320-43wrpestoijhu
+  encryption-key: jklmXyZLMNOP1234567890abcdefABC1kwjrfjvuhirewvnoweripj4w0pvonovi
+  access-expiration: 1_800_000 # 30 minutes
+  refresh-expiration: 604_800_000 # 7 days
+
+cache:
+  jti-black-list-name: blacklist::jti
+  ttl: 600  # 10 minutes
+
+minio:
+  url: http://localhost:9000
+  username: nikita
+  password: 12345678
+  buckets:
+    book-cover: book-covers
+    user-avatar: user-avatars
+
+    chapter-content: chapters-content
+    chapter-media: chapters-media
+
+    comment-content: comments-content
+    comment-media: comments-media
+
+    review-content: reviews-content
+    review-media: reviews-media
+
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/readingbooks
+    username: nikita
+    password: 1234
+
+  elasticsearch:
+    uris: http://localhost:9200
+    username: elastic
+    password: string
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 1234
+  cache:
+    type: redis
+
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 2MB
+
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        hbm2ddl.auto: validate
+        default_schema: senla
+
+        jdbc:
+          batch_size: 50
+          order_inserts: true
+          order_updates: true
+
+  liquibase:
+    enabled: true
+    change-log: liquibase/changelog-master.xml
+    default-schema: senla
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: readingbooksjms@gmail.com
+    password: 1234
+
+    properties:
+      mail:
+        debug: true
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            clientId:
+#            clientSecret:
+#            redirectUri: http://localhost:8080/login/oauth2/code/google
+#            scope: openid,email,profile
+#
+#springdoc:
+#  swagger-ui:
+#    oauth:
+#      client-id:
+#      client-secret:
+#      scopes: openid,email,profile
+#    oauth2-redirect-url: http://localhost:8080/swagger-ui/
+
+logging:
+  config: classpath:/logging/logback-spring.xml
+  level:
+    org:
+      hibernate.orm.jdbc.bind: TRACE
+      elasticsearch.client: TRACE
+      springframework:
+        jdbc.core: TRACE
+        cache: TRACE
+        data:
+          redis:
+            core: TRACE

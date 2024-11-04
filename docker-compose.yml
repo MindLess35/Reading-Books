@@ -1,0 +1,199 @@
+name: readingbooks
+
+services:
+  app:
+    image: readingbooks:1.0
+    build:
+      context: .
+    container_name: readingbooks
+    restart: on-failure:5
+    networks:
+      - app-network
+    depends_on:
+      - postgres
+      - minio
+      - redis
+      - elasticsearch
+      - logstash
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/readingbooks
+      - SPRING_DATASOURCE_USERNAME=nikita
+      - SPRING_DATASOURCE_PASSWORD=1234
+#      - SPRING_DATASOURCE_PASSWORD=/run/secrets/postgres_password
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA=senla
+      - SPRING_LIQUIBASE_DEFAULT_SCHEMA=senla
+
+      - SPRING_ELASTICSEARCH_URIS=http://elasticsearch:9200
+      - SPRING_ELASTICSEARCH_USERNAME=elastic
+      - SPRING_ELASTICSEARCH_PASSWORD=string
+#      - SPRING_ELASTICSEARCH_PASSWORD=/run/secrets/elasticsearch_password
+
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+      - SPRING_DATA_REDIS_PASSWORD=1234
+#      - SPRING_DATA_REDIS_PASSWORD=/run/secrets/redis_password
+
+      - MINIO_URL=http://minio:9000
+      - MINIO_USERNAME=nikita
+      - MINIO_PASSWORD=12345678
+#      - MINIO_PASSWORD=/run/secrets/minio_password
+
+      - JWT_ENCRYPTION_KEY=jklmXyZLMNOP1234567890abcdefABC1kwjrfjvuhirewvnoweripj4w0pvonovi
+      - JWT_SIGNING_KEY=erwlfrkgtuig3q8940-506e-9458320-43wrpestoijhu
+#      - JWT_ENCRYPTION_KEY=/run/secrets/token_encryption_key
+#      - JWT_ENCRYPTION_KEY=/run/secrets/token_encryption_key
+#    secrets:
+#      - postgres_password
+#      - elasticsearch_password
+#      - redis_password
+#      - minio_password
+#      - token_signing_key
+#      - token_encryption_key
+    ports:
+      - "8080:8080"
+
+
+  postgres:
+    image: postgres:15.6
+    container_name: postgres
+    networks:
+      - app-network
+    environment:
+      - POSTGRES_USER=nikita
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
+      - POSTGRES_DB=readingbooks
+    command: postgres -c search_path=senla
+    volumes:
+      - ./repository/src/main/resources/postgres/init-postgres.sql:/docker-entrypoint-initdb.d/init-postgres.sql
+      - postgres-volume:/var/lib/postgresql/data
+    secrets:
+      - postgres_password
+    ports:
+      - "5432:5432"
+
+
+  redis:
+    image: redis:7.4
+    container_name: redis
+    networks:
+      - app-network
+#    environment:
+#      - REDIS_PASSWORD_FILE=/run/secrets/redis_password
+    command: redis-server --save 20 1 --loglevel debug --requirepass 1234
+    volumes:
+      - redis-volume:/data
+#    secrets:
+#      - redis_password
+    ports:
+      - "6379:6379"
+
+
+  minio:
+    image: minio/minio:RELEASE.2024-10-02T17-50-41Z
+    container_name: minio
+    networks:
+      - app-network
+    environment:
+      - MINIO_ROOT_USER=nikita
+      - MINIO_ROOT_PASSWORD_FILE=/run/secrets/minio_password
+    volumes:
+      - ./repository/src/main/resources/minio/init-minio.sh:/docker-entrypoint-initdb.d/init-minio.sh
+      - ./repository/src/main/resources/minio/entrypoint.sh:/entrypoint.sh
+      - minio-volume:/data
+    entrypoint: /entrypoint.sh
+    secrets:
+      - minio_password
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+
+
+  elasticsearch:
+    image: elasticsearch:7.17.24
+    container_name: elasticsearch
+    networks:
+      - app-network
+      - elk-network
+    environment:
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=string
+#      - ELASTIC_PASSWORD_FILE=/run/secrets/elasticsearch_password
+    volumes:
+      - elasticsearch-volume:/usr/share/elasticsearch/data
+#    secrets:
+#      - elasticsearch_password
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+
+  kibana:
+    image: kibana:7.17.24
+    container_name: kibana
+    restart: on-failure:5
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk-network
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD_FILE=/run/secrets/elasticsearch_password
+    secrets:
+      - elasticsearch_password
+    ports:
+      - "5601:5601"
+
+
+  logstash:
+    image: logstash:7.17.24
+    container_name: logstash
+    restart: on-failure:5
+    depends_on:
+      - elasticsearch
+    networks:
+      - app-network
+      - elk-network
+    volumes:
+      - ./service/src/main/resources/logging/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+
+
+
+secrets:
+  postgres_password:
+    file: ./repository/src/main/resources/secrets/postgres_password.txt
+  elasticsearch_password:
+    file: ./repository/src/main/resources/secrets/elasticsearch_password.txt
+  redis_password:
+    file: ./repository/src/main/resources/secrets/redis_password.txt
+  minio_password:
+    file: ./repository/src/main/resources/secrets/minio_password.txt
+  token_signing_key:
+    file: ./repository/src/main/resources/secrets/jwt/token_signing_key.txt
+  token_encryption_key:
+    file: ./repository/src/main/resources/secrets/jwt/token_encryption_key.txt
+
+
+networks:
+  app-network:
+    driver: bridge
+
+  elk-network:
+    driver: bridge
+
+
+volumes:
+  redis-volume:
+    driver: local
+
+  postgres-volume:
+    driver: local
+
+  minio-volume:
+    driver: local
+
+  elasticsearch-volume:
+    driver: local

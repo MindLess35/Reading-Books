@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="create-books-table" author="Nikita Lyashkevich">
+        <createTable tableName="books">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="title" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="form" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="status" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="price" type="DECIMAL">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="annotation" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="author_note" type="VARCHAR(255)"/>
+
+            <column name="access_type" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="series_id" type="BIGINT"/>
+
+            <column name="cover_url" type="VARCHAR(128)"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="books"
+                baseColumnNames="series_id"
+                referencedTableName="book_series"
+                referencedColumnNames="id"
+                constraintName="fk_books_series_id"
+                onDelete="SET NULL"/>
+
+        <rollback>
+            <dropTable tableName="books" cascadeConstraints="true"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
