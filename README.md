@@ -15,7 +15,7 @@
 
 ### Core
 - Java 17
-- Spring Boot 3.3.3 (Spring Data (JPA, Redis, Elasticsearch), Spring AOP, Spring Security (JWT), Spring Web, Spring Test)
+- Spring Boot 3.3.3 (Spring Data (JPA, JDBC, Redis, Elasticsearch), Spring AOP, Spring Security (JWT), Spring Web, Spring Test, Spring Validation)
 - Maven
 - Liquibase
 - Swagger
@@ -23,8 +23,10 @@
 ### Storage
 - PostgreSQL 15.6
 - Redis 7.4
+- MinIO (Хранилище объектов, аналог Amazon S3)
 - Elasticsearch 7.17.24
-- MinIO RELEASE.2024-10-02T17-50-41Z (Хранилище объектов, аналог Amazon S3)
+- Kibana 7.17.24
+- Logstash 7.17.24
 
 ### Testing
 - JUnit 5
@@ -35,8 +37,6 @@
 ### DevOps
 - Docker
 - Docker Compose
-- Kibana 7.17.24
-- Logstash 7.17.24
 
 ### Utilities
 - MapStruct
